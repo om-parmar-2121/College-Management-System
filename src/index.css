@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Solid Colors from light purple & white theme palette */
+    --bg-main: #F4F1FA;         /* Soft lavender page background */
+    --bg-card: #FFFFFF;         /* White card container */
+    --bg-sidebar: #FFFFFF;      /* White sidebar */
+    --bg-input: #F8F6FC;        /* Very light lavender input background */
+    --text-primary: #1D142B;     /* Deep rich violet-black for high contrast */
+    --text-secondary: #5F5276;   /* Rich purple-slate for secondary text */
+    --accent-blue: #7F32D0;      /* Rich purple brand accent */
+    --accent-lavender: #C084FC;  /* Lavender accent */
+    --border-solid: #E2E8F0;     /* Light slate borders */
+    --border-hover: #CBD5E1;
+    
+    --background: 260 20% 97%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 262 80% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 30% 95%;
+    --secondary-foreground: 262 80% 30%;
+
+    --muted: 260 10% 96%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 260 30% 95%;
+    --accent-foreground: 262 80% 30%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 262 80% 50%;
+
+    --radius: 0.5rem;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 262 80% 50%;
+    --info-foreground: 0 0% 100%;
+
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    transition: none !important; /* Remove all transition glows/fades */
+    box-shadow: none !important; /* Force delete all shadows */
+    text-shadow: none !important;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
+  }
+
+  /* Custom Flat Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-main);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-solid);
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Flat Solid Card - No Shadows, No Glows, No Blurs */
+  .glass-card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-solid) !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  .glass-card:hover {
+    border-color: var(--border-hover) !important;
+    box-shadow: none !important;
+  }
+
+  /* Flat inputs */
+  .glass-input {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-solid) !important;
+    color: var(--text-primary) !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+  }
+  .glass-input:focus {
+    border-color: var(--accent-blue) !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Flat Buttons */
+  .btn-aesthetic {
+    @apply font-bold px-4 py-2.5 rounded-lg active:scale-95;
+    box-shadow: none !important;
+  }
+  .btn-primary-aesthetic {
+    @apply btn-aesthetic;
+    background-color: var(--accent-blue) !important;
+    color: white !important;
+  }
+  .btn-primary-aesthetic:hover {
+    background-color: #6d28d9 !important;
+  }
+  
+  .btn-secondary-aesthetic {
+    @apply btn-aesthetic;
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-solid) !important;
+  }
+  .btn-secondary-aesthetic:hover {
+    background-color: var(--bg-input) !important;
+  }
+
+  .btn-danger-aesthetic {
+    @apply btn-aesthetic;
+    background-color: #fee2e2 !important;
+    color: #ef4444 !important;
+    border: 1px solid #fecaca !important;
+  }
+  .btn-danger-aesthetic:hover {
+    background-color: #ef4444 !important;
+    color: white !important;
+  }
+
+  /* Text gradients removed - Solid Colors instead */
+  .gradient-text-blue {
+    color: var(--accent-blue) !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+  }
+  .gradient-text-green {
+    color: #059669 !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+  }
+  .gradient-text-orange {
+    color: #d97706 !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+  }
+
+  /* Flat Tables styling */
+  .aesthetic-table-container {
+    @apply overflow-hidden rounded-lg border;
+    border-color: var(--border-solid) !important;
+    background-color: var(--bg-card) !important;
+  }
+  .aesthetic-table {
+    @apply w-full text-left border-collapse text-sm;
+    color: var(--text-secondary) !important;
+  }
+  .aesthetic-table th {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    @apply font-bold px-5 py-4 border-b uppercase text-xs tracking-wider;
+    border-color: var(--border-solid) !important;
+  }
+  .aesthetic-table td {
+    @apply px-5 py-4 border-b;
+    border-color: var(--border-solid) !important;
+  }
+  .aesthetic-table tr:last-child td {
+    @apply border-b-0;
+  }
+  .aesthetic-table tr:hover td {
+    background-color: #f5f3ff !important;
+    color: var(--text-primary) !important;
+  }
+
+  /* Form labels */
+  .aesthetic-label {
+    @apply text-xs font-semibold uppercase tracking-wider mb-2 block;
+    color: var(--text-secondary) !important;
+  }
+
+  /* Flat Badges */
+  .aesthetic-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider;
+  }
+  .badge-success-aesthetic {
+    @apply aesthetic-badge;
+    background-color: #ecfdf5 !important;
+    color: #059669 !important;
+    border: 1px solid #a7f3d0 !important;
+  }
+  .badge-warning-aesthetic {
+    @apply aesthetic-badge;
+    background-color: #fffbeb !important;
+    color: #d97706 !important;
+    border: 1px solid #fde68a !important;
+  }
+  .badge-danger-aesthetic {
+    @apply aesthetic-badge;
+    background-color: #fef2f2 !important;
+    color: #dc2626 !important;
+    border: 1px solid #fecaca !important;
+  }
+  .badge-info-aesthetic {
+    @apply aesthetic-badge;
+    background-color: #f5f3ff !important;
+    color: var(--accent-blue) !important;
+    border: 1px solid #ddd6fe !important;
+  }
+  /* Page Titles and Subtitles */
+  .page-title {
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: 900 !important;    /* font-black (ultra bold) */
+    color: var(--text-primary) !important;
+    font-family: var(--font-heading) !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.25 !important;
+  }
+  .page-subtitle {
+    font-size: 0.875rem !important; /* text-sm */
+    font-weight: 600 !important;    /* font-semibold */
+    color: var(--text-secondary) !important;
+    margin-top: 6px !important;
+    font-family: var(--font-body) !important;
+  }
+}
+
+/* Remove glow animations */
+.pulse-glow {
+  animation: none !important;
+  box-shadow: none !important;
+}
+.float-animation {
+  animation: none !important;
+}

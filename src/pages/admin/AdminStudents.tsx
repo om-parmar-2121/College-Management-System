@@ -6,8 +6,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Search, Trash2, GraduationCap } from 'lucide-react';
+import { Plus, Search, Trash2, GraduationCap, AlertTriangle } from 'lucide-react';
 import { BulkImportDialog } from '@/components/BulkImportDialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const AdminStudents: React.FC = () => {
   const { data: students, isLoading } = useTableQuery('students');
@@ -15,6 +25,7 @@ const AdminStudents: React.FC = () => {
   const { toast } = useToast();
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', email: '', course: '', year: '1', department: '', enrollment_number: '' });
 
   const filteredStudents = students?.filter((s: any) =>
@@ -42,13 +53,19 @@ const AdminStudents: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this student record? This will also remove their user account.')) return;
+  const handleDelete = (id: string) => {
+    setStudentToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!studentToDelete) return;
     try {
-      await remove.mutateAsync(id);
+      await remove.mutateAsync(studentToDelete);
       toast({ title: 'Student deleted successfully' });
     } catch (err: any) {
       toast({ variant: 'destructive', title: 'Error', description: err.message });
+    } finally {
+      setStudentToDelete(null);
     }
   };
 
@@ -187,6 +204,25 @@ const AdminStudents: React.FC = () => {
           </div>
         )}
       </div>
+
+      <AlertDialog open={!!studentToDelete} onOpenChange={(open) => !open && setStudentToDelete(null)}>
+        <AlertDialogContent className="bg-[var(--bg-card)] border border-[var(--border-solid)] text-[var(--text-primary)] rounded-2xl max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold flex items-center gap-2 text-rose-600">
+              <AlertTriangle className="w-5.5 h-5.5" /> Delete Student Profile?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-sm text-[var(--text-secondary)] mt-2 leading-relaxed">
+              Are you sure you want to delete this student record? This action cannot be undone and will permanently remove their profile and login credentials.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-4 gap-3">
+            <AlertDialogCancel className="btn-secondary-aesthetic m-0 py-2.5">Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="btn-aesthetic bg-rose-600 hover:bg-rose-700 text-white py-2.5">
+              Confirm Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardLayout>
   );
 };

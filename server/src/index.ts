@@ -41,6 +41,14 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
+app.get('/api/ping', (req, res) => {
+  res.json({
+    status: 'active',
+    message: 'Keep-alive ping successful',
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('College CMS API is running...');
 });

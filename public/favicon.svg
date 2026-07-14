@@ -3,7 +3,7 @@
   <rect width="512" height="512" rx="120" fill="#7F32D0" />
   
   <!-- Graduation Cap Icon (Centered and Scaled) -->
-  <g fill="none" stroke="#FFFFFF" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" transform="translate(64, 64) scale(16)">
+  <g fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(64, 64) scale(16)">
     <!-- Mortarboard Diamond -->
     <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
     <!-- Cap Base -->

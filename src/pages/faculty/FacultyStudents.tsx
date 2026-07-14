@@ -49,30 +49,30 @@ const FacultyStudents: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                 {filtered?.map((s: any) => (
-                  <tr key={s.id}>
-                    <td className="font-bold text-[var(--text-primary)]">{s.name || '—'}</td>
-                    <td className="text-[var(--text-secondary)] font-semibold">{s.email || '—'}</td>
-                    <td className="text-[var(--accent-blue)] font-bold">{s.enrollment_number || '—'}</td>
-                    <td className="text-[var(--text-secondary)] font-medium">{s.course}</td>
-                    <td>
-                      <span className="text-xs font-bold bg-[var(--bg-input)] px-2.5 py-1 rounded-md text-[var(--text-secondary)] border border-[var(--border-solid)]">
-                        Year {s.year}
-                      </span>
-                    </td>
-                    <td className="text-[var(--text-secondary)]">{s.department}</td>
-                  </tr>
-                ))}
-                {(!filtered || filtered.length === 0) && (
-                  <tr>
-                    <td colSpan={6} className="text-center text-slate-500 py-12 italic">
-                      No matching student profiles found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                  {filtered?.map((s: any) => (
+                    <tr key={s.id}>
+                      <td className="font-bold text-[var(--text-primary)]">{s.name || '—'}</td>
+                      <td className="text-[var(--text-secondary)] font-semibold">{s.email || '—'}</td>
+                      <td className="text-[var(--accent-blue)] font-bold">{s.enrollment_number || '—'}</td>
+                      <td className="text-[var(--text-secondary)] font-medium">{s.course}</td>
+                      <td>
+                        <span className="text-xs font-bold bg-[var(--bg-input)] px-2.5 py-1 rounded-md text-[var(--text-secondary)] border border-[var(--border-solid)]">
+                          Year {s.year}
+                        </span>
+                      </td>
+                      <td className="text-[var(--text-secondary)]">{s.department}</td>
+                    </tr>
+                  ))}
+                  {(!filtered || filtered.length === 0) && (
+                    <tr>
+                      <td colSpan={6} className="text-center text-slate-500 py-12 italic">
+                        No matching student profiles found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
         )}
       </div>
     </DashboardLayout>

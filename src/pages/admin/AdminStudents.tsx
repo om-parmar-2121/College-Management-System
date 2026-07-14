@@ -27,12 +27,21 @@ const AdminStudents: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', email: '', course: '', year: '1', department: '', enrollment_number: '' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const filteredStudents = students?.filter((s: any) =>
     s.name?.toLowerCase().includes(search.toLowerCase()) ||
     s.enrollment_number?.toLowerCase().includes(search.toLowerCase()) ||
     s.department?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil((filteredStudents?.length || 0) / itemsPerPage);
+  const paginatedStudents = filteredStudents?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) || [];
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const handleCreate = async () => {
     if (!form.name || !form.email || !form.enrollment_number) {
@@ -142,15 +151,43 @@ const AdminStudents: React.FC = () => {
       </div>
 
       <div className="glass-card space-y-6">
-        {/* Search bar */}
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
-          <Input
-            placeholder="Search by name, ID or department..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="glass-input pl-10 focus:border-blue-500/80 focus:ring-blue-500/50 placeholder:text-slate-500"
-          />
+        {/* Search & Pagination Row */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="relative max-w-md flex-1">
+            <Search className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+            <Input
+              placeholder="Search by name, ID or department..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="glass-input pl-10 focus:border-blue-500/80 focus:ring-blue-500/50 placeholder:text-slate-500"
+            />
+          </div>
+
+          {/* Pagination Controls */}
+          {!isLoading && filteredStudents && filteredStudents.length > 0 && (
+            <div className="flex items-center flex-wrap gap-3">
+              <span className="text-xs font-semibold text-[var(--text-secondary)]">
+                Showing <strong className="text-[var(--text-primary)]">{(currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, filteredStudents.length)}</strong> of <strong className="text-[var(--text-primary)]">{filteredStudents.length}</strong>
+              </span>
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all duration-200 ${
+                        currentPage === page
+                          ? "bg-[var(--accent-blue)] text-white scale-105"
+                          : "bg-[var(--bg-input)] text-[var(--accent-blue)] hover:bg-[var(--border-solid)] hover:text-[var(--text-primary)] border border-[var(--border-solid)]"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {isLoading ? (
@@ -170,7 +207,7 @@ const AdminStudents: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredStudents?.map((s: any) => (
+                {paginatedStudents.map((s: any) => (
                   <tr key={s.id}>
                     <td className="font-bold text-[var(--text-primary)]">{s.name || '—'}</td>
                     <td className="text-[var(--text-secondary)] font-semibold">{s.email || '—'}</td>

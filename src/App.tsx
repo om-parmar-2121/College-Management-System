@@ -37,10 +37,9 @@ const queryClient = new QueryClient({
 });
 
 const RootRedirect = () => {
-  const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
 
-  if (!token) {
+  if (!role) {
     return <Navigate to="/login" replace />;
   }
 

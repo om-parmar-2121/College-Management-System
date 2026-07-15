@@ -49,7 +49,16 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const activeNav = userRole === 'admin' ? adminNav : userRole === 'faculty' ? facultyNav : studentNav;
   const currentSection = userRole.charAt(0).toUpperCase() + userRole.slice(1);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    try {
+      await fetch(`${BASE_URL}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch {
+      // Continue with logout even if API call fails
+    }
     localStorage.clear();
     navigate('/login');
   };

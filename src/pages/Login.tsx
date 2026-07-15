@@ -58,6 +58,7 @@ const Login: React.FC = () => {
       const res = await fetch(`${BASE_URL}/api/auth/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(body),
       });
 
@@ -66,7 +67,6 @@ const Login: React.FC = () => {
         throw new Error(data.message || 'Authentication failed');
       }
 
-      localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.user.role);
       localStorage.setItem('name', data.user.full_name);
       localStorage.setItem('email', data.user.email);

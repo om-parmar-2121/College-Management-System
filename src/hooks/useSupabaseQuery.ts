@@ -4,14 +4,6 @@ const API_BASE = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api`
   : 'http://localhost:5000/api';
 
-const getAuthHeaders = () => {
-  const token = localStorage.getItem('token');
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-  };
-};
-
 export function useTableQuery(table: string, options?: {
   select?: string;
   filters?: Record<string, any>;
@@ -40,7 +32,7 @@ export function useTableQuery(table: string, options?: {
 
       const url = `${API_BASE}/${table}?${params.toString()}`;
       const res = await fetch(url, {
-        headers: getAuthHeaders(),
+        credentials: 'include',
       });
       if (!res.ok) {
         const err = await res.json();
@@ -59,7 +51,8 @@ export function useTableMutation(table: string) {
     mutationFn: async (values: Record<string, any>) => {
       const res = await fetch(`${API_BASE}/${table}`, {
         method: 'POST',
-        headers: getAuthHeaders(),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(values),
       });
       if (!res.ok) {
@@ -85,7 +78,8 @@ export function useTableMutation(table: string) {
     mutationFn: async ({ id, values }: { id: string; values: Record<string, any> }) => {
       const res = await fetch(`${API_BASE}/${table}/${id}`, {
         method: 'PUT',
-        headers: getAuthHeaders(),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(values),
       });
       if (!res.ok) {
@@ -110,7 +104,7 @@ export function useTableMutation(table: string) {
     mutationFn: async (id: string) => {
       const res = await fetch(`${API_BASE}/${table}/${id}`, {
         method: 'DELETE',
-        headers: getAuthHeaders(),
+        credentials: 'include',
       });
       if (!res.ok) {
         const err = await res.json();
@@ -132,3 +126,4 @@ export function useTableMutation(table: string) {
 
   return { insert, update, remove };
 }
+

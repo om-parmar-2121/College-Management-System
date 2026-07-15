@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwtkeyforcollegecms123!';
 
 export interface AuthRequest extends Request {
+  cookies: Record<string, string>;
   user?: {
     id: string;
     email: string;
@@ -13,14 +14,17 @@ export interface AuthRequest extends Request {
 }
 
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+  // Read token from cookie first, fall back to Authorization header
+  const cookieToken = req.cookies?.token;
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const headerToken = authHeader && authHeader.split(' ')[1];
+  const token = cookieToken || headerToken;
 
   if (!token) {
     return res.status(401).json({ message: 'Access token required' });
   }
 
-  jwt.verify(token, JWT_SECRET, (err, user) => {
+  jwt.verify(token, JWT_SECRET, (err: jwt.VerifyErrors | null, user: string | jwt.JwtPayload | undefined) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid or expired access token' });
     }

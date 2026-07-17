@@ -51,9 +51,15 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   const handleSignOut = async () => {
     const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
     try {
       await fetch(`${BASE_URL}/api/auth/logout`, {
         method: 'POST',
+        headers,
         credentials: 'include',
       });
     } catch {

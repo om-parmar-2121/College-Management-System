@@ -4,6 +4,15 @@ const API_BASE = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api`
   : 'http://localhost:5000/api';
 
+const getHeaders = (extraHeaders: Record<string, string> = {}) => {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = { ...extraHeaders };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+};
+
 export function useTableQuery(table: string, options?: {
   select?: string;
   filters?: Record<string, any>;
@@ -32,6 +41,7 @@ export function useTableQuery(table: string, options?: {
 
       const url = `${API_BASE}/${table}?${params.toString()}`;
       const res = await fetch(url, {
+        headers: getHeaders(),
         credentials: 'include',
       });
       if (!res.ok) {
@@ -51,7 +61,7 @@ export function useTableMutation(table: string) {
     mutationFn: async (values: Record<string, any>) => {
       const res = await fetch(`${API_BASE}/${table}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders({ 'Content-Type': 'application/json' }),
         credentials: 'include',
         body: JSON.stringify(values),
       });
@@ -78,7 +88,7 @@ export function useTableMutation(table: string) {
     mutationFn: async ({ id, values }: { id: string; values: Record<string, any> }) => {
       const res = await fetch(`${API_BASE}/${table}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders({ 'Content-Type': 'application/json' }),
         credentials: 'include',
         body: JSON.stringify(values),
       });
@@ -104,6 +114,7 @@ export function useTableMutation(table: string) {
     mutationFn: async (id: string) => {
       const res = await fetch(`${API_BASE}/${table}/${id}`, {
         method: 'DELETE',
+        headers: getHeaders(),
         credentials: 'include',
       });
       if (!res.ok) {

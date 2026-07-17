@@ -70,6 +70,7 @@ const Login: React.FC = () => {
       localStorage.setItem('role', data.user.role);
       localStorage.setItem('name', data.user.full_name);
       localStorage.setItem('email', data.user.email);
+      if (data.token) localStorage.setItem('token', data.token);
       
       if (data.student_id) localStorage.setItem('studentId', data.student_id);
       if (data.faculty_id) localStorage.setItem('facultyId', data.faculty_id);
